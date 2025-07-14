@@ -1,142 +1,158 @@
-# 🚀 Cloudflare Pages 部署指南
+# Cloudflare Pages 部署指南
 
-## ✅ 构建状态
+本项目已配置为可以部署到 Cloudflare Pages，支持 Next.js 应用和 Supabase 集成。
 
-你的Next.js应用已成功配置为支持Cloudflare Pages全栈SSR部署！
+## 🚀 自动部署（推荐）
 
-## 📊 应用架构
+### 1. 连接 GitHub 仓库
 
-### 渲染模式
-- **静态页面** (`○`): `/`, `/about`, `/icon.svg` - 预渲染的静态内容
-- **SSR页面** (`ƒ`): `/ssr-example` - 在Edge上动态渲染
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. 进入 **Pages** 页面
+3. 点击 **Create a project**
+4. 选择 **Connect to Git**
+5. 连接你的 GitHub 仓库
 
-### 技术栈
-- **Next.js**: v15.3.5
-- **Runtime**: Edge Runtime (用于SSR页面)
-- **适配器**: @cloudflare/next-on-pages v1.13.12
+### 2. 配置构建设置
 
-## 🛠️ 本地构建命令
+在 Cloudflare Pages 项目配置中设置：
+
+**Framework preset**: `Next.js`
+**Build command**: `pnpm run pages:build`
+**Build output directory**: `.vercel/output/static`
+
+### 3. 设置环境变量
+
+在 Cloudflare Pages 项目的 **Settings** -> **Environment variables** 中添加：
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+⚠️ **注意**: 确保环境变量名称以 `NEXT_PUBLIC_` 开头，这样 Next.js 才能在客户端访问这些变量。
+
+## 🛠️ 手动部署
+
+### 1. 安装 Wrangler CLI
 
 ```bash
-# 构建用于Cloudflare Pages
-npm run pages:build
-
-# 本地开发模式
-npm run pages:dev
-
-# 部署到Cloudflare Pages（需要先安装wrangler）
-npm run pages:deploy
+npm install -g wrangler
 ```
 
-## 📁 构建输出
+### 2. 登录 Cloudflare
 
-```
-.vercel/output/static/          # ✅ 这是你需要的输出目录
-├── index.html                  # 首页静态文件
-├── about.html                  # 关于页面静态文件
-├── icon.svg                    # 网站图标
-├── _worker.js/                 # Edge Function代码
-├── _next/                      # Next.js静态资源
-├── _routes.json               # 路由配置
-└── _headers                   # HTTP头配置
+```bash
+wrangler login
 ```
 
-## 🌐 Cloudflare Pages 部署配置
+### 3. 构建并部署
 
-### 在Cloudflare Dashboard中设置：
+```bash
+# 构建项目
+pnpm run pages:build
+
+# 部署到 Cloudflare Pages
+wrangler pages deploy .vercel/output/static
+```
+
+## 📁 项目结构
 
 ```
-构建命令：npm run pages:build
-输出目录：.vercel/output/static
-Node.js版本：18.x 或更高
-环境变量：无特殊要求
+├── next.config.js           # Next.js 配置（已配置 Cloudflare Pages）
+├── wrangler.toml           # Cloudflare Pages 配置
+├── package.json            # 包含部署脚本
+├── lib/
+│   └── supabase.js         # Supabase 客户端配置
+└── app/
+    └── supabase-demo/      # Supabase 演示页面
 ```
 
-### 自动部署设置
-1. 连接GitHub仓库：`git@github.com:wangchao0802/helloNextJs.git`
-2. 分支：`main`
-3. 每次推送会自动触发重新部署
+## 🔧 配置说明
 
-## 🔧 项目配置文件
+### next.config.js
+```javascript
+const nextConfig = {
+  // 配置 Cloudflare Pages
+  experimental: {
+    runtime: 'nodejs',
+  },
+  // 静态导出配置
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+  // 避免在构建时出现错误
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+};
+```
 
-### `wrangler.toml`
+### wrangler.toml
 ```toml
 name = "hellonextjs"
 compatibility_date = "2023-12-18"
 compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+
+# Pages 配置
+pages_build_output_dir = ".vercel/output/static"
+
+[[pages]]
+functions = ".vercel/output/functions"
 ```
 
-### `next.config.js`
-```javascript
-const nextConfig = {
-  // Cloudflare Pages配置
-}
-```
+## 🐛 常见问题
 
-### SSR页面配置 (`app/ssr-example/page.js`)
-```javascript
-export const dynamic = "force-dynamic";
-export const runtime = "edge";  // 🔑 关键配置
-```
-
-## 🚀 部署步骤
-
-### 方法1: GitHub自动部署（推荐）
-1. 推送代码到GitHub
-2. 在Cloudflare Dashboard中连接仓库
-3. 设置构建配置后自动部署
-
-### 方法2: 本地部署
+### 1. 构建失败：`vc: not found`
+**解决方案**: 确保已安装 Vercel CLI
 ```bash
-# 安装Wrangler CLI
-npm install -g wrangler
-
-# 登录Cloudflare
-wrangler login
-
-# 部署
-npm run pages:deploy
+pnpm add -D vercel
 ```
 
-## 📈 性能特性
+### 2. 环境变量未生效
+**解决方案**: 
+- 确保变量名以 `NEXT_PUBLIC_` 开头
+- 在 Cloudflare Pages 控制台中正确设置环境变量
+- 重新部署项目
 
-✅ **已启用的Cloudflare功能**:
-- 全球CDN加速
-- 自动HTTPS
-- Edge Runtime SSR
-- 静态资源缓存优化
-- 混合渲染（静态+动态）
+### 3. Supabase 连接失败
+**解决方案**:
+- 检查 Supabase URL 和 API Key 是否正确
+- 确保 Supabase 项目已创建相应的数据表
+- 检查网络连接和 CORS 设置
 
-## 🧪 测试功能
+### 4. 图片显示异常
+**解决方案**: 项目已配置 `images.unoptimized: true`，如需使用图片优化，请参考 Cloudflare Images 文档
 
-部署后，访问你的Cloudflare Pages域名：
+## 📊 监控与日志
 
-- **静态页面测试**: `/` 和 `/about` - 应该加载极快
-- **SSR页面测试**: `/ssr-example` - 每次刷新显示最新服务器时间
+1. **实时日志**: 在 Cloudflare Dashboard 中查看部署日志
+2. **分析**: 使用 Cloudflare Analytics 监控网站性能
+3. **错误追踪**: 查看 Functions 标签页中的错误日志
 
-## 🛠️ 故障排除
+## 🔗 有用链接
 
-### 常见问题
-1. **构建失败**: 确保使用Next.js 15.3.5+
-2. **SSR不工作**: 检查页面是否设置了`runtime = "edge"`
-3. **静态资源404**: 确认输出目录为`.vercel/output/static`
+- [Cloudflare Pages 文档](https://developers.cloudflare.com/pages/)
+- [Next.js on Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/nextjs/)
+- [@cloudflare/next-on-pages](https://github.com/cloudflare/next-on-pages)
+- [Supabase 文档](https://supabase.com/docs)
 
-### 调试命令
-```bash
-# 查看构建日志
-cat .vercel/output/static/_worker.js/nop-build-log.json
+## 📝 部署检查清单
 
-# 本地预览
-npx wrangler pages dev .vercel/output/static
-```
-
-## 🎯 后续优化
-
-- 添加环境变量配置
-- 配置自定义域名
-- 设置缓存策略
-- 添加监控和分析
+- [ ] Vercel CLI 已安装 (`pnpm add -D vercel`)
+- [ ] 环境变量已设置（`NEXT_PUBLIC_SUPABASE_URL` 和 `NEXT_PUBLIC_SUPABASE_ANON_KEY`）
+- [ ] Supabase 项目已创建并配置
+- [ ] 数据库表已创建（todos 表）
+- [ ] GitHub 仓库已连接到 Cloudflare Pages
+- [ ] 构建设置已正确配置
+- [ ] 部署成功并可以访问
 
 ---
 
-🎉 **恭喜！你的Next.js应用现在完全支持Cloudflare Pages全栈部署！** 
+🎉 **完成！** 你的 Next.js + Supabase 应用现在应该可以在 Cloudflare Pages 上正常运行了！ 
