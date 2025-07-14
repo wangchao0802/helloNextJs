@@ -12,6 +12,7 @@
     "pages:dev": "npx @cloudflare/next-on-pages@1 --dev"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.51.0",
     "next": "^15.3.5",
     "react": "^18",
     "react-dom": "^18"

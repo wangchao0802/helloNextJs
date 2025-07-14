@@ -114,6 +114,19 @@ export default function Home() {
         >
           🔄 SSR 示例页面 (Dynamic)
         </a>
+        <a
+          href="/supabase-demo"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          🗄️ Supabase 数据库演示
+        </a>
       </div>
 
       <footer
