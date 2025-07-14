@@ -1,0 +1,93 @@
+export default function Home() {
+  return (
+    <main
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        padding: "2rem",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        color: "white",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "3rem",
+          marginBottom: "1rem",
+          textAlign: "center",
+        }}
+      >
+        🎉 Hello, Next.js! 🎉
+      </h1>
+
+      <p
+        style={{
+          fontSize: "1.2rem",
+          marginBottom: "2rem",
+          textAlign: "center",
+          maxWidth: "600px",
+        }}
+      >
+        欢迎来到你的第一个Next.js应用！这是一个简单的Hello World例子。
+      </p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "1rem",
+          width: "100%",
+          maxWidth: "800px",
+        }}
+      >
+        <div
+          style={{
+            background: "rgba(255, 255, 255, 0.1)",
+            padding: "1.5rem",
+            borderRadius: "8px",
+            textAlign: "center",
+          }}
+        >
+          <h3>🚀 快速开始</h3>
+          <p>修改 app/page.js 来编辑这个页面</p>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255, 255, 255, 0.1)",
+            padding: "1.5rem",
+            borderRadius: "8px",
+            textAlign: "center",
+          }}
+        >
+          <h3>📖 学习</h3>
+          <p>探索Next.js的强大功能和特性</p>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255, 255, 255, 0.1)",
+            padding: "1.5rem",
+            borderRadius: "8px",
+            textAlign: "center",
+          }}
+        >
+          <h3>🛠️ 构建</h3>
+          <p>创建令人惊叹的Web应用程序</p>
+        </div>
+      </div>
+
+      <footer
+        style={{
+          marginTop: "3rem",
+          textAlign: "center",
+          opacity: "0.8",
+        }}
+      >
+        <p>由 Next.js 强力驱动 ⚡</p>
+      </footer>
+    </main>
+  );
+}
