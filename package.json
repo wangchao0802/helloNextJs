@@ -6,15 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages@1",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
+    "pages:dev": "npx @cloudflare/next-on-pages@1 --dev"
   },
   "dependencies": {
-    "next": "14.0.3",
+    "next": "^15.3.5",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.12",
     "eslint": "^8",
     "eslint-config-next": "14.0.3"
   }
-} 
+}

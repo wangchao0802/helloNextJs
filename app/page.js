@@ -79,6 +79,43 @@ export default function Home() {
         </div>
       </div>
 
+      <div
+        style={{
+          marginTop: "2rem",
+          display: "flex",
+          gap: "1rem",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
+        <a
+          href="/about"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          📄 关于页面 (Static)
+        </a>
+        <a
+          href="/ssr-example"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          🔄 SSR 示例页面 (Dynamic)
+        </a>
+      </div>
+
       <footer
         style={{
           marginTop: "3rem",
