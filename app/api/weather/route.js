@@ -1,5 +1,8 @@
 import { fetchWeatherData } from "../../../lib/weather-api.js";
 
+// Cloudflare Pages 要求使用 Edge Runtime
+export const runtime = "edge";
+
 export async function GET(request) {
   try {
     // 从查询参数获取城市，默认使用北京

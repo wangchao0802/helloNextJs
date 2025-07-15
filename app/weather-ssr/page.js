@@ -5,6 +5,8 @@ import { fetchWeatherData } from "../../lib/weather-api.js";
 // 强制动态渲染，禁用所有缓存
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+// Cloudflare Pages 要求使用 Edge Runtime
+export const runtime = "edge";
 
 // 获取天气数据 - 每次都重新获取
 async function getWeatherData() {
