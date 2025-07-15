@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试页面</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .test-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin: 1rem 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .response-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .status-success {
+            color: #00ff88;
+        }
+
+        .status-error {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔧 API测试工具</h1>
+
+        <div class="test-panel">
+            <h2>HTTP请求测试</h2>
+
+            <div class="form-group">
+                <label for="method">请求方法:</label>
+                <select id="method">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="url">URL:</label>
+                <input type="text" id="url" placeholder="https://api.example.com/endpoint"
+                    value="https://jsonplaceholder.typicode.com/posts/1">
+            </div>
+
+            <div class="form-group">
+                <label for="headers">请求头 (JSON格式):</label>
+                <textarea id="headers" rows="3" placeholder='{"Content-Type": "application/json"}'>{}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="body">请求体 (仅POST/PUT):</label>
+                <textarea id="body" rows="4" placeholder='{"key": "value"}'></textarea>
+            </div>
+
+            <button class="btn" onclick="sendRequest()">发送请求</button>
+            <button class="btn" onclick="clearResponse()">清空响应</button>
+            <button class="btn" onclick="testLocalhost()">测试localhost:3000</button>
+        </div>
+
+        <div class="test-panel">
+            <h2>响应结果</h2>
+            <div id="status"></div>
+            <div id="response" class="response-area">等待发送请求...</div>
+        </div>
+
+        <div class="test-panel">
+            <h2>🚀 快速测试</h2>
+            <button class="btn" onclick="testJSONPlaceholder()">测试 JSONPlaceholder API</button>
+            <button class="btn" onclick="testGitHubAPI()">测试 GitHub API</button>
+            <button class="btn" onclick="testCORS()">测试 CORS</button>
+        </div>
+
+        <div class="test-panel">
+            <h2>🔗 返回导航</h2>
+            <a href="/" class="btn">返回首页</a>
+            <a href="/test.html" class="btn">HTML测试页面</a>
+        </div>
+    </div>
+
+    <script>
+        async function sendRequest() {
+            const method = document.getElementById('method').value;
+            const url = document.getElementById('url').value;
+            const headersText = document.getElementById('headers').value;
+            const bodyText = document.getElementById('body').value;
+
+            const statusDiv = document.getElementById('status');
+            const responseDiv = document.getElementById('response');
+
+            try {
+                // 解析请求头
+                let headers = {};
+                if (headersText.trim()) {
+                    headers = JSON.parse(headersText);
+                }
+
+                // 构建请求选项
+                const options = {
+                    method: method,
+                    headers: headers
+                };
+
+                // 添加请求体（仅对POST/PUT）
+                if (method === 'POST' || method === 'PUT') {
+                    if (bodyText.trim()) {
+                        options.body = bodyText;
+                    }
+                }
+
+                statusDiv.innerHTML = `<span class="status-info">🔄 正在发送 ${method} 请求...</span>`;
+                responseDiv.textContent = '请求中...';
+
+                const startTime = Date.now();
+                const response = await fetch(url, options);
+                const endTime = Date.now();
+
+                const responseText = await response.text();
+                let responseData;
+
+                try {
+                    responseData = JSON.parse(responseText);
+                    responseDiv.textContent = JSON.stringify(responseData, null, 2);
+                } catch {
+                    responseDiv.textContent = responseText;
+                }
+
+                const statusClass = response.ok ? 'status-success' : 'status-error';
+                statusDiv.innerHTML = `
+                    <span class="${statusClass}">
+                        ${response.ok ? '✅' : '❌'} ${response.status} ${response.statusText}
+                        | 响应时间: ${endTime - startTime}ms
+                    </span>
+                `;
+
+            } catch (error) {
+                statusDiv.innerHTML = `<span class="status-error">❌ 错误: ${error.message}</span>`;
+                responseDiv.textContent = `错误详情:\n${error.stack}`;
+            }
+        }
+
+        function clearResponse() {
+            document.getElementById('status').innerHTML = '';
+            document.getElementById('response').textContent = '已清空响应...';
+        }
+
+        function testLocalhost() {
+            document.getElementById('method').value = 'GET';
+            document.getElementById('url').value = 'http://localhost:3000/api/test';
+            document.getElementById('headers').value = '{}';
+            document.getElementById('body').value = '';
+        }
+
+        function testJSONPlaceholder() {
+            document.getElementById('method').value = 'GET';
+            document.getElementById('url').value = 'https://jsonplaceholder.typicode.com/posts/1';
+            document.getElementById('headers').value = '{}';
+            document.getElementById('body').value = '';
+            sendRequest();
+        }
+
+        function testGitHubAPI() {
+            document.getElementById('method').value = 'GET';
+            document.getElementById('url').value = 'https://api.github.com/repos/vercel/next.js';
+            document.getElementById('headers').value = '{}';
+            document.getElementById('body').value = '';
+            sendRequest();
+        }
+
+        function testCORS() {
+            document.getElementById('method').value = 'GET';
+            document.getElementById('url').value = 'https://httpbin.org/cors';
+            document.getElementById('headers').value = '{}';
+            document.getElementById('body').value = '';
+            sendRequest();
+        }
+
+        console.log('🔧 API测试工具已加载');
+        console.log('📍 访问路径: /api-test.html');
+    </script>
+</body>
+
+</html>

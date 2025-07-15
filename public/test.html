@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯HTML测试页面</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📄 纯HTML测试页面</h1>
+
+        <div class="card">
+            <h2>🎯 这是一个静态HTML文件</h2>
+            <p>这个页面不经过Next.js路由系统，直接从 <code>public/test.html</code> 提供服务。</p>
+
+            <div class="code-block">
+                访问路径: <strong>/test.html</strong><br>
+                文件位置: <strong>public/test.html</strong><br>
+                渲染方式: <strong>静态HTML (无JavaScript渲染)</strong>
+            </div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>⚡ 超快加载</h3>
+                <p>无需JavaScript编译，直接加载HTML</p>
+            </div>
+
+            <div class="feature">
+                <h3>📱 响应式</h3>
+                <p>使用CSS Grid和Flexbox实现</p>
+            </div>
+
+            <div class="feature">
+                <h3>🎨 现代设计</h3>
+                <p>玻璃拟态效果和渐变背景</p>
+            </div>
+
+            <div class="feature">
+                <h3>🔧 独立运行</h3>
+                <p>不依赖React或Next.js</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🧪 交互测试</h3>
+            <p>点击下面的按钮测试JavaScript功能：</p>
+            <button class="btn" onclick="showAlert()">显示警告</button>
+            <button class="btn" onclick="changeColor()">改变背景色</button>
+            <button class="btn" onclick="addContent()">动态添加内容</button>
+        </div>
+
+        <div class="card">
+            <h3>🔗 导航链接</h3>
+            <a href="/" class="btn">回到Next.js首页</a>
+            <a href="/about" class="btn">关于页面</a>
+            <a href="/ssr-example" class="btn">SSR示例</a>
+        </div>
+
+        <div id="dynamic-content"></div>
+    </div>
+
+    <script>
+        function showAlert() {
+            alert('🎉 JavaScript工作正常！这是一个纯HTML页面中的脚本。');
+        }
+
+        function changeColor() {
+            const colors = [
+                'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)',
+                'linear-gradient(135deg, #fd79a8 0%, #e84393 100%)',
+                'linear-gradient(135deg, #00b894 0%, #00a085 100%)',
+                'linear-gradient(135deg, #fdcb6e 0%, #e17055 100%)',
+                'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)'
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = randomColor;
+        }
+
+        function addContent() {
+            const content = document.getElementById('dynamic-content');
+            const timestamp = new Date().toLocaleString();
+            content.innerHTML = `
+                <div class="card">
+                    <h3>✨ 动态添加的内容</h3>
+                    <p>添加时间: ${timestamp}</p>
+                    <p>这个内容是通过JavaScript动态生成的！</p>
+                </div>
+            `;
+        }
+
+        // 页面加载时的欢迎动画
+        window.addEventListener('load', function () {
+            console.log('📄 纯HTML测试页面加载完成！');
+            console.log('🔗 访问路径: /test.html');
+            console.log('📁 文件位置: public/test.html');
+        });
+    </script>
+</body>
+
+</html>

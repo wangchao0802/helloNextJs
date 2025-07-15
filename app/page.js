@@ -127,6 +127,32 @@ export default function Home() {
         >
           🗄️ Supabase 数据库演示
         </a>
+        <a
+          href="/test.html"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          📄 纯HTML测试页面 (Static)
+        </a>
+        <a
+          href="/html-route-test"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          🌈 复古测试页面 (Next.js)
+        </a>
       </div>
 
       <footer

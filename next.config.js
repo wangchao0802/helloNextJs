@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 配置 Cloudflare Pages
-  experimental: {
-    runtime: 'nodejs',
-  },
-  // 静态导出配置
+  // 静态导出配置 for Cloudflare Pages
   trailingSlash: true,
   images: {
     unoptimized: true,
