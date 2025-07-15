@@ -177,7 +177,7 @@ export default function Home() {
             border: "1px solid rgba(255, 255, 255, 0.3)",
           }}
         >
-          🌤️ 天气API (服务端)
+          🚀 天气API (ISR-推荐)
         </a>
         <a
           href="/weather-client"
@@ -190,7 +190,20 @@ export default function Home() {
             border: "1px solid rgba(255, 255, 255, 0.3)",
           }}
         >
-          ⚡ 天气API (客户端)
+          ⚡ 天气API (客户端渲染)
+        </a>
+        <a
+          href="/weather-ssr"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          🔄 天气API (纯SSR-慢)
         </a>
       </div>
 

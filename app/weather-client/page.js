@@ -35,7 +35,7 @@ export default function WeatherClientPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/weather?city=北京");
+      const response = await fetch("/api/weather?city=上海");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -134,7 +134,10 @@ export default function WeatherClientPage() {
               🔄 重新获取
             </button>
             <a href="/weather" className={styles.navButton}>
-              🏠 服务端版本
+              🚀 ISR版本
+            </a>
+            <a href="/weather-ssr" className={styles.navButton}>
+              🔄 纯SSR版本
             </a>
             <a href="/" className={styles.navButton}>
               🏠 返回首页
@@ -305,7 +308,10 @@ export default function WeatherClientPage() {
             🔄 {loading ? "获取中..." : "刷新数据"}
           </button>
           <a href="/weather" className={styles.navButton}>
-            🏠 服务端版本
+            🚀 ISR版本
+          </a>
+          <a href="/weather-ssr" className={styles.navButton}>
+            🔄 纯SSR版本
           </a>
           <a href="/" className={styles.navButton}>
             🏠 返回首页

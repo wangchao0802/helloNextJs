@@ -1,21 +1,14 @@
 // 天气页面 - 展示 API 调用示例
 import styles from "./weather.module.css";
+import { fetchWeatherData } from "../../lib/weather-api.js";
 
-// 获取北京天气数据 - 通过我们的 API 路由
+// 获取北京天气数据 - 使用共享 API 函数 (ISR)
 async function getWeatherData() {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+  console.log("🚀 ISR: 调用共享API函数，10分钟缓存...");
 
-  const res = await fetch(`${baseUrl}/api/weather?city=北京`, {
-    next: { revalidate: 600 }, // 10分钟缓存
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch weather data");
-  }
-
-  return await res.json();
+  // 在ISR模式下，Next.js会自动处理缓存
+  // 我们直接使用共享函数，避免HTTP调用
+  return await fetchWeatherData("北京");
 }
 
 // 天气代码映射已移至 API 路由中处理
@@ -190,6 +183,9 @@ export default async function WeatherPage() {
           </a>
           <a href="/weather-client" className={styles.navButton}>
             ⚡ 客户端版本
+          </a>
+          <a href="/weather-ssr" className={styles.navButton}>
+            🔄 纯SSR版本
           </a>
         </div>
       </div>
