@@ -166,6 +166,32 @@ export default function Home() {
         >
           🔄 ISR 示例页面 (Incremental)
         </a>
+        <a
+          href="/weather"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          🌤️ 天气API (服务端)
+        </a>
+        <a
+          href="/weather-client"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          ⚡ 天气API (客户端)
+        </a>
       </div>
 
       <footer
