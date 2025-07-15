@@ -153,6 +153,19 @@ export default function Home() {
         >
           🌈 复古测试页面 (Next.js)
         </a>
+        <a
+          href="/isr-example"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "rgba(255, 255, 255, 0.2)",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+          }}
+        >
+          🔄 ISR 示例页面 (Incremental)
+        </a>
       </div>
 
       <footer
